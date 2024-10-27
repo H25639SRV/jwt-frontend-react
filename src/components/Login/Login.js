@@ -5,7 +5,7 @@ const Login = (props) => {
   let history = useHistory();
 
   const handleCreateNewAccount = () => {
-    history.push("register");
+    history.push("/register");
   };
   return (
     <div className="login-container">
