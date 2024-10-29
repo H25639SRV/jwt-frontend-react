@@ -10,6 +10,13 @@ const Register = (props) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const defaultValidInput = useState({
+    isValidEmail: true,
+    isValidPhone: true,
+    isValidPassword: true,
+    isValidConfirmPassword: true,
+  });
+  const [objCheckValid, setObjCheckInput] = useState(defaultValidInput);
 
   let history = useHistory();
 
@@ -24,26 +31,33 @@ const Register = (props) => {
   }, []);
 
   const isValidInput = () => {
+    setObjCheckInput(defaultValidInput);
+
     if (!email) {
       toast.error("Email is required!");
+      setObjCheckInput({ ...defaultValidInput, isValidEmail: false });
       return false;
     }
     if (!phone) {
       toast.error("Phone is required!");
+      setObjCheckInput({ ...defaultValidInput, isValidPhone: false });
       return false;
     }
     if (!password) {
       toast.error("Password is required!");
+      setObjCheckInput({ ...defaultValidInput, isValidPassword: false });
       return false;
     }
 
     if (password != confirmPassword) {
       toast.error("Passwords do not match!");
+      setObjCheckInput({ ...defaultValidInput, isValidConfirmPassword: false });
       return false;
     }
     let regx = /\S+@\S+\.\S+/;
     if (!regx.test(email)) {
       toast.error("Invalid Email!");
+      setObjCheckInput({ ...defaultValidInput, isValidEmail: false });
       return false;
     }
 
@@ -70,7 +84,11 @@ const Register = (props) => {
               <label>Email:</label>
               <input
                 type="text"
-                className="form-control"
+                className={
+                  objCheckValid.isValidEmail
+                    ? "form-control"
+                    : "form-control is-invalid"
+                }
                 placeholder="Email address"
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
@@ -80,7 +98,11 @@ const Register = (props) => {
               <label>Phone number:</label>
               <input
                 type="text"
-                className="form-control"
+                className={
+                  objCheckValid.isValidPhone
+                    ? "form-control"
+                    : "form-control is-invalid"
+                }
                 placeholder="Phone number"
                 value={phone}
                 onChange={(event) => setPhone(event.target.value)}
@@ -100,17 +122,25 @@ const Register = (props) => {
               <label>Password:</label>
               <input
                 type="password"
-                className="form-control"
+                className={
+                  objCheckValid.isValidPassword
+                    ? "form-control"
+                    : "form-control is-invalid"
+                }
                 placeholder="Password"
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
               />
             </div>
-            <div className="form-group">
+            <div className="form-group ">
               <label>Re-enter your password:</label>
               <input
                 type="password"
-                className="form-control"
+                className={
+                  objCheckValid.isValidConfirmPassword
+                    ? "form-control"
+                    : "form-control is-invalid"
+                }
                 placeholder="Re-enter your password"
                 value={confirmPassword}
                 onChange={(event) => setConfirmPassword(event.target.value)}
@@ -119,6 +149,7 @@ const Register = (props) => {
 
             <button
               className="btn btn-primary"
+              type="button"
               onClick={() => handleRegister()}
             >
               Register
