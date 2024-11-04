@@ -16,7 +16,7 @@ const Register = (props) => {
     isValidPassword: true,
     isValidConfirmPassword: true,
   });
-  const [objCheckValid, setObjCheckInput] = useState(defaultValidInput);
+  const [objCheckInput, setObjCheckInput] = useState(defaultValidInput);
 
   let history = useHistory();
 
@@ -25,7 +25,7 @@ const Register = (props) => {
   };
 
   useEffect(() => {
-    // axios.get("http://localhost:8080/api/test-api").then((data) => {
+    // axios.get("http://localhost:8080/api/v1/test-api").then((data) => {
     //   console.log(">>> check data axios: ", data);
     // });
   }, []);
@@ -38,6 +38,14 @@ const Register = (props) => {
       setObjCheckInput({ ...defaultValidInput, isValidEmail: false });
       return false;
     }
+
+    let regx = /\S+@\S+\.\S+/;
+    if (!regx.test(email)) {
+      toast.error("Invalid Email!");
+      setObjCheckInput({ ...defaultValidInput, isValidEmail: false });
+      return false;
+    }
+
     if (!phone) {
       toast.error("Phone is required!");
       setObjCheckInput({ ...defaultValidInput, isValidPhone: false });
@@ -49,15 +57,9 @@ const Register = (props) => {
       return false;
     }
 
-    if (password != confirmPassword) {
+    if (password !== confirmPassword) {
       toast.error("Passwords do not match!");
       setObjCheckInput({ ...defaultValidInput, isValidConfirmPassword: false });
-      return false;
-    }
-    let regx = /\S+@\S+\.\S+/;
-    if (!regx.test(email)) {
-      toast.error("Invalid Email!");
-      setObjCheckInput({ ...defaultValidInput, isValidEmail: false });
       return false;
     }
 
@@ -67,8 +69,14 @@ const Register = (props) => {
   const handleRegister = () => {
     let check = isValidInput();
 
-    let userData = { email, phone, username, password };
-    console.log(">>> check user data", userData);
+    if (check == true) {
+      axios.post("http://localhost:8080/api/v1/register", {
+        email,
+        phone,
+        username,
+        password,
+      });
+    }
   };
   return (
     <div className="register-container">
@@ -85,7 +93,7 @@ const Register = (props) => {
               <input
                 type="text"
                 className={
-                  objCheckValid.isValidEmail
+                  objCheckInput.isValidEmail
                     ? "form-control"
                     : "form-control is-invalid"
                 }
@@ -99,7 +107,7 @@ const Register = (props) => {
               <input
                 type="text"
                 className={
-                  objCheckValid.isValidPhone
+                  objCheckInput.isValidPhone
                     ? "form-control"
                     : "form-control is-invalid"
                 }
@@ -123,7 +131,7 @@ const Register = (props) => {
               <input
                 type="password"
                 className={
-                  objCheckValid.isValidPassword
+                  objCheckInput.isValidPassword
                     ? "form-control"
                     : "form-control is-invalid"
                 }
@@ -137,7 +145,7 @@ const Register = (props) => {
               <input
                 type="password"
                 className={
-                  objCheckValid.isValidConfirmPassword
+                  objCheckInput.isValidConfirmPassword
                     ? "form-control"
                     : "form-control is-invalid"
                 }
