@@ -77,6 +77,7 @@ const Register = (props) => {
       if (+serverData.EC === 0) {
         toast.success(serverData.EM);
         history.push("/login");
+        window.location.reload();
       } else {
         toast.error(serverData.EM);
       }
