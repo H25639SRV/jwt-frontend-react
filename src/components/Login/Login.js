@@ -35,7 +35,7 @@ const Login = (props) => {
       return;
     }
     let response = await loginUser(valueLogin, password);
-    if (response && +response.data.EC === 0) {
+    if (response && +response.EC === 0) {
       //success
       let data = {
         isAuthenticated: true,
@@ -43,7 +43,7 @@ const Login = (props) => {
       };
       sessionStorage.setItem("account", JSON.stringify(data));
       history.push("/users");
-      window.location.reload();
+      // window.location.reload();
     }
     if (response && +response.EC !== 0) {
       //error
