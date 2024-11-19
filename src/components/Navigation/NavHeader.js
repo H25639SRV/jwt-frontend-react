@@ -25,17 +25,13 @@ const NavHeader = (props) => {
     }
   };
 
-  if ((user && user.isAuthenticated === true) || location.pathname === "/") {
+  if (
+    (user && user.isAuthenticated === true) ||
+    location.pathname === "/" ||
+    location.pathname === "/about"
+  ) {
     return (
       <>
-        {/* <div className="topnav">
-          <NavLink to="/" exact>
-            Home
-          </NavLink>
-          <NavLink to="/users">Users</NavLink>
-          <NavLink to="/projects">Projects</NavLink>
-          <NavLink to="/about">About</NavLink>
-        </div> */}
         <div className="nav-header">
           <Navbar expand="lg" bg="header">
             <Container>
@@ -61,6 +57,9 @@ const NavHeader = (props) => {
                   </NavLink>
                   <NavLink to="/roles" className="nav-link">
                     Roles
+                  </NavLink>
+                  <NavLink to="/group-roles" className="nav-link">
+                    Group Roles
                   </NavLink>
                   <NavLink to="/projects" className="nav-link">
                     Projects
